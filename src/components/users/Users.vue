@@ -13,7 +13,7 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" @click="openAddDialog">添加用户</el-button>
+          <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
         </el-col>
       </el-row>
       <el-table :data="usersList" border stripe style="width: 100%">
@@ -38,7 +38,7 @@
               type="primary"
               icon="el-icon-edit"
               circle
-              @click="showEditUserDialog(scope.row.id)"
+              @click="openEditUserDialog(scope.row.id)"
             ></el-button>
             <el-button
               size="mini"
@@ -47,8 +47,14 @@
               circle
               @click="deleteUser(scope.row.id)"
             ></el-button>
-            <el-tooltip content="修改权限" placement="top" :enterable="false">
-              <el-button size="mini" type="info" icon="el-icon-setting" circle></el-button>
+            <el-tooltip content="分配角色" placement="top" :enterable="false">
+              <el-button
+                size="mini"
+                type="info"
+                icon="el-icon-setting"
+                circle
+                @click="openSetRoleDialog(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -69,15 +75,22 @@
       :editUserForm="editForm"
       @refreshUserList="getUserList"
     ></edit-user-dialog>
+    <set-role-dialog
+      ref="setRoleDialogRef"
+      :userInfo="userInfo"
+      :rolesList="rolesList"
+      @refreshUserList="getUserList"
+    ></set-role-dialog>
   </div>
 </template>
 
 <script>
 import AddUserDialog from './addUserDialog'
 import EditUserDialog from './editUserDialog'
+import SetRoleDialog from './setRoleDialog'
 
 export default {
-  components: { AddUserDialog, EditUserDialog },
+  components: { AddUserDialog, EditUserDialog, SetRoleDialog },
   data() {
     return {
       queryInfo: {
@@ -87,7 +100,9 @@ export default {
       },
       usersList: [],
       total: 0,
-      editForm: {}
+      editForm: {},
+      userInfo: {},
+      rolesList: []
     }
   },
   created() {
@@ -120,10 +135,20 @@ export default {
       }
       this.$message.success('更新用户状态成功！')
     },
-    openAddDialog() {
+    openAddUserDialog() {
       this.$refs.addUserDialogRef.addUserDialogVisible = true
     },
-    async showEditUserDialog(id) {
+    async openSetRoleDialog(userInfo) {
+      this.userInfo = userInfo
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败')
+      }
+      this.rolesList = res.data
+      console.log(this.rolesList)
+      this.$refs.setRoleDialogRef.setRoleDialogVisible = true
+    },
+    async openEditUserDialog(id) {
       const { data: res } = await this.$http.get('users/' + id)
       if (res.meta.status !== 200) {
         return this.$message.error('查询用户信息失败')
