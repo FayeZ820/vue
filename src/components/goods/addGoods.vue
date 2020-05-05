@@ -225,7 +225,6 @@ export default {
       const filePath = file.response.data.tmp_path
       const i = this.addGoodsForm.pics.findIndex(x => x.pic === filePath)
       this.addGoodsForm.pics.splice(i, 1)
-      console.log(this.addGoodsForm)
     },
     handleSuccess(res) {
       const picInfo = { pic: res.data.tmp_path }

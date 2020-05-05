@@ -107,7 +107,6 @@ export default {
       const { data: res } = await this.$http.get('/kuaidi/804909574412544580')
       if (res.meta.status !== 200) { return this.$message.error('获取物流信息失败') }
       this.logisticsInfo = res.data
-      console.log(this.logisticsInfo)
       this.$refs.checkLogisticsDialogRef.checkLogisticsDialogVisible = true
     }
   }

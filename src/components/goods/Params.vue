@@ -14,7 +14,7 @@
             style="width: 300px"
             v-model="selectedCategoriedKeys"
             :options="categoriesList"
-            :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children', checkStrictly: true }"
+            :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children'}"
             @change="handleChange"
           ></el-cascader>
         </el-col>

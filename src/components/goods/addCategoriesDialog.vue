@@ -89,8 +89,6 @@ export default {
         this.$emit('refreshGetCategoriesLIst')
         this.addCategoriesDialogVisible = false
       })
-
-      console.log(this.addCategoriesForm)
     },
     addCategoriesDialogClosed() {
       this.$refs.addCategoriesFormRef.resetFields()

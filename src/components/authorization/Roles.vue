@@ -136,7 +136,6 @@ export default {
     },
     async showSetRightsDialog(role) {
       this.roleId = (role.id).toString()
-      console.log(this.roleId)
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) {
         return this.$message.error('获取权限列表失败')

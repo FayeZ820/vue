@@ -52,7 +52,6 @@ export default {
           rid: this.selectedRoleId
         }
       )
-      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('更新角色失败')
       }
